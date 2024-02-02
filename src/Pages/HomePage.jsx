@@ -6,10 +6,13 @@ import Card from "../Components/Card"
 
 const HomePage = () => {
 
-  const { products } = useContext(ProductContext)
+  const { products, category } = useContext(ProductContext)
 
   return (
-    <div className="container d-flex flex-wrap justify-content-center justify-content-md-between gap-3 gap-md-4 my-5">
+    <div className container>
+<h2 className="my-4" >{category && category} </h2>
+
+    <div className=" d-flex flex-wrap justify-content-center justify-content-md-between gap-3 gap-md-4 my-5">
       {/* veriler gelmediyse yukleniyor bas */}
 {!products && <Loader />}
 
@@ -18,6 +21,7 @@ const HomePage = () => {
  <Card key={product.id} product= {product} />
 ))}
 
+    </div>
     </div>
   )
 }
