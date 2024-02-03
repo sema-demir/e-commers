@@ -1,6 +1,7 @@
 import { useLocalStorage } from "@uidotdev/usehooks";
 import  React, { createContext, useState } from "react";
-useLocalStorage
+import { toast } from "react-toastify";
+
 
  export const BasketContext = createContext()
 
@@ -28,9 +29,13 @@ item.id === updated.id ? updated : item)
 //state i güncelle
 setBasket(newBasket)
 
+toast.info(`Ürün miktarı arttırıldı(${updated.amount})`)
+
 } else{
 //ürün sepette yoksa ürünü sepete ekle miktarı 1 esit
 setBasket([...basket, {... newProduct, amount: 1}])
+
+toast.success('Ürün Sepete Eklendi')
 
 }
 
@@ -56,9 +61,13 @@ const removeFromBasket = (delete_id) => {
         )
         setBasket(newBasket)
 
+toast.info(`Ürün miktarı azaltıldı(${updated.amount})`)
+
     }else{//miktarı bire eşitse urunu kaldır
         const filtred = basket.filter((i) => i.id !== delete_id)
         setBasket(filtred)
+
+        toast.error(`Ürün Sepetten Kaldırıldı`)
     }
 }
 

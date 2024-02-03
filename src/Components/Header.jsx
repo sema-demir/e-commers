@@ -25,7 +25,7 @@ const Header = () => {
     <nav className='navbar navbar-dark bg-black sticky-top navbar-expand-md '>
       <div className='container-fluid'>
         <Link className='navbar-brand' to='/'>
-          Context Store
+        Shopping Center
         </Link>
         <button
           className='navbar-toggler'
