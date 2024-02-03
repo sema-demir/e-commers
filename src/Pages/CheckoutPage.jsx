@@ -1,40 +1,43 @@
 import { useContext } from "react";
 import { BasketContext } from "../Context/basketContext";
+import { BasketItem } from "../Components/BasketItem";
+import { Link } from "react-router-dom";
 
 const CheckoutPage = () => {
-  const { basket } = useContext(BasketContext);
+  const { basket, addToBasket, removeFromBasket } = useContext(BasketContext);
+ 
+ const totalAmount = basket.reduce(
+  (total, i) => total + i.amount, 0
+ )
+ const totalPrice = basket.reduce(
+  (total, i) => total + i.price * i.amount, 0
+ )
+ 
   return (
     <div className="container my-5">
-      <div className="d-flex flex-column gap-5">
-        {basket.map((item) => (
-          <div className="d-flex gap-3 align-items-center">
-            <div className="d-flex align-items-center">
-              <div className="rounded bg-white">
-                <img
-                  className="object-fit-contain"
-                  width={60}
-                  height={60}
-                  src={item.image}
-                />
-              </div>
-              <h4 className="text-truncate">{item.title.slice(0,10) + '...'}</h4>
-            </div>
+      <div className="d-flex  flex-column gap-5">
+        {/* sepette ürün vyoksa */}
+{basket.length === 0 && (
+  <p className="text-center my-5">
+    <span className="mx-3">Sepetinize Ürün Ekleyiniz </span>
+    <Link to= {'/'}>Ürünler</Link>
+    
+  </p>
+)}
 
-            <div className="d-flex align-items-center">
-              <h4>{item.price}</h4>
-              <p className="d-flex align-items-center gap-1 text-nowrap">
-                <span>Miktar:</span>
-                <span className="fw-bold">{item.amount} </span>{" "}
-              </p>
-
-              <div className="d-flex gap-2">
-                <button className="btn btn-danger">-</button>
-                <button className="btn btn-success">+</button>
-              </div>
-            </div>
-          </div>
+        {/* sepette ürün varsa */}
+        {basket?.map((item) => (
+         <BasketItem 
+         key={item.id} item= {item} 
+         addToBasket= {addToBasket} 
+         removeFromBasket={removeFromBasket} />
         ))}
       </div>
+<div className="border p-5 rounded my-5 fs-4">
+  <p>Sepetteki Ürün:  <span className="text-warning">{totalAmount}</span> adet</p>
+  <p>Toplam Fiyat: <span className="text-succes">{totalPrice.toFixed(2)} ₺ </span> </p>
+</div>
+
     </div>
   );
 };

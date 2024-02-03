@@ -1,11 +1,12 @@
+import { useLocalStorage } from "@uidotdev/usehooks";
 import  React, { createContext, useState } from "react";
-
+useLocalStorage
 
  export const BasketContext = createContext()
 
 export function BasketProvider ({children}) {
 
-    const [basket, setBasket] = useState([])
+    const [basket, setBasket] = useLocalStorage('basket', [])
 
 //sepete ürun ekleme
 const addToBasket = (newProduct) =>{
@@ -17,6 +18,7 @@ const found = basket.find((i) => i.id === newProduct.id)
 if(found){
 //ürün sepette varsa 1 attır
 const updated = {...found, amount: found.amount + 1 }
+
 
 
 //sepet dizisindeki eski ürünün yerine güncel halini koy
@@ -39,9 +41,29 @@ setBasket([...basket, {... newProduct, amount: 1}])
 
 
 //sepetten ürün kaldırma
+const removeFromBasket = (delete_id) => {
+
+    //sepetteki ürünü bul
+    const found = basket.find((i) => i.id === delete_id)
+
+
+//miktarı 1den fazlaysa > miktarı 1 eksilt 
+    if(found.amount > 1){
+        const updated = {...found, amount: found.amount -1 }
+
+        const newBasket = basket.map((i) =>
+        i.id === updated.id ? updated : i
+        )
+        setBasket(newBasket)
+
+    }else{//miktarı bire eşitse urunu kaldır
+        const filtred = basket.filter((i) => i.id !== delete_id)
+        setBasket(filtred)
+    }
+}
 
     return(
-        <BasketContext.Provider value= {{ basket, addToBasket }}>
+        <BasketContext.Provider value= {{ basket, addToBasket, removeFromBasket }}>
             {children} 
             {/* //uygulamanın tamamı kullanabilir  */}
         </BasketContext.Provider>
