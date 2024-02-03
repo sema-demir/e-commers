@@ -1,4 +1,9 @@
+import { useContext } from "react";
+import { BasketContext } from '../Context/basketContext';
+
 const Card = ({ product }) => {
+const { addToBasket } = useContext(BasketContext)
+
   return (
     <div className="card py-2" style={{ width: "250px" }}>
       <div className="d-flex justify-content-center">
@@ -11,7 +16,9 @@ const Card = ({ product }) => {
         <h4 className="text-truncate">{product.title}</h4>
         <p>{product.price} </p>
         <p>{product.category} </p>
-        <button>Sepete Ekle</button>
+        <button onClick={() => addToBasket(product)}
+        >Sepete Ekle
+        </button>
 
 
       </div>
